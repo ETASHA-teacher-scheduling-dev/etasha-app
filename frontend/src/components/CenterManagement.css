@@ -1,0 +1,58 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 1.5rem; /* Space between grid items */
+  margin-bottom: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.form-field input,
+.form-field textarea {
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Make the Address field span both columns */
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 1rem;
+  margin-top: 1rem;
+  grid-column: 1 / -1; /* Span full width */
+}
+
+.form-actions .submit-btn {
+  background-color: #4361ee;
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+.form-actions .submit-btn:hover {
+  background-color: #3a52cc;
+}
+
+.form-actions .cancel-btn {
+  background-color: #f8f9fa;
+  color: #495057;
+  border: 1px solid #ced4da;
+}
+.form-actions .cancel-btn:hover {
+  background-color: #e9ecef;
+}

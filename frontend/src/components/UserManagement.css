@@ -1,0 +1,123 @@
+.user-management-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.toolbar h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #1d3557;
+}
+
+.add-user-btn {
+  background-color: #4361ee;
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.add-user-btn:hover {
+  background-color: #3a52cc;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-input, .role-filter {
+  padding: 10px 15px;
+  border: 1px solid #dde1e6;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.search-input {
+  flex-grow: 1;
+}
+
+.role-filter {
+  min-width: 150px;
+}
+
+.user-table-container {
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eaedf1;
+  vertical-align: middle;
+}
+
+.user-table th {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.role-cell {
+  text-transform: capitalize;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.status-pill.active {
+  background-color: #e7f7f0;
+  color: #008744;
+}
+
+.status-pill.inactive {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.actions-cell .action-btn {
+  border: 1px solid transparent;
+  background-color: transparent;
+  font-weight: 600;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.action-btn.edit {
+  color: #4361ee;
+}
+.action-btn.edit:hover {
+  background-color: #eaf0fe;
+}
+
+.action-btn.delete {
+  color: #e63946;
+}
+.action-btn.delete:hover {
+  background-color: #fde8e9;
+}
