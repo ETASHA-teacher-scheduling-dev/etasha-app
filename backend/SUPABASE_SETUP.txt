@@ -1,0 +1,48 @@
+═══════════════════════════════════════════════════════════
+  SUPABASE SETUP - QUICK REFERENCE
+═══════════════════════════════════════════════════════════
+
+📊 YOUR ORGANIZATION HAS 11 TABLES:
+
+1. centers              - Training center locations
+2. trainers             - User accounts (trainers & schedulers)
+3. modules              - Course modules
+4. programs             - Program templates
+5. batches              - Student batches
+6. sessions             - Training sessions
+7. leaves               - Trainer leave records
+8. batchSchedules       - Batch scheduling calendar
+9. ProgramModules       - Join table (Programs ↔ Modules)
+10. TrainerModules      - Join table (Trainers ↔ Modules)
+
+═══════════════════════════════════════════════════════════
+  IMMEDIATE ACTION REQUIRED
+═══════════════════════════════════════════════════════════
+
+1. Get database password:
+   https://vuiqklucyjngwvmpzxyw.supabase.co
+   → Project Settings → Database → Database Password
+
+2. Update backend/.env:
+   SUPABASE_DB_PASSWORD=paste_your_password_here
+
+3. Test connection:
+   cd backend
+   npm run dev
+
+═══════════════════════════════════════════════════════════
+  CONNECTION DETAILS
+═══════════════════════════════════════════════════════════
+
+Project: ETASHA Teacher Scheduling
+ID: vuiqklucyjngwvmpzxyw
+Region: Mumbai (ap-south-1)
+Dashboard: https://vuiqklucyjngwvmpzxyw.supabase.co
+
+Database Host: aws-0-ap-south-1.pooler.supabase.com
+Database User: postgres.vuiqklucyjngwvmpzxyw
+Database Name: postgres
+
+═══════════════════════════════════════════════════════════
+
+📖 Full guide: See SUPABASE_MIGRATION.md in root folder

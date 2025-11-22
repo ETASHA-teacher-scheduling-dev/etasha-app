@@ -2,7 +2,6 @@ const db = require('./models');
 const bcrypt = require('bcryptjs');
 const { Sequelize } = require('sequelize');
 const dbConfig = require('./config/db.config');
-
 const Trainer = db.trainer;
 const Module = db.module;
 const Program = db.program;

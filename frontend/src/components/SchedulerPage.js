@@ -381,6 +381,30 @@ const SchedulerPage = () => {
 
   // --- HELPER FUNCTIONS FOR WORKING DAYS ---
   
+  // ETASHA Society Holidays 2025
+  const holidays2025 = [
+    new Date(2025, 0, 1),   // New Year - January 1
+    new Date(2025, 0, 26),  // Republic Day - January 26
+    new Date(2025, 2, 13),  // Chhoti Holi - March 13
+    new Date(2025, 2, 14),  // Holi - March 14
+    new Date(2025, 2, 31),  // Id-ul-Fitr - March 31
+    new Date(2025, 6, 6),   // Muharram - July 6
+    new Date(2025, 7, 9),   // Raksha Bandhan - August 9
+    new Date(2025, 7, 15),  // Independence Day - August 15
+    new Date(2025, 9, 2),   // Gandhi Jayanti and Dussehra - October 2
+    new Date(2025, 9, 20),  // Diwali - October 20
+    new Date(2025, 11, 25)  // Christmas - December 25
+  ];
+  
+  // Check if a date is a holiday
+  const isHoliday = (date) => {
+    const dateStr = `${date.getFullYear()}-${String(date.getMonth()).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    return holidays2025.some(holiday => {
+      const holidayStr = `${holiday.getFullYear()}-${String(holiday.getMonth()).padStart(2, '0')}-${String(holiday.getDate()).padStart(2, '0')}`;
+      return dateStr === holidayStr;
+    });
+  };
+  
   // Check if a date is the 2nd or 4th Saturday of the month
   const isNonWorkingSaturday = (date) => {
     // Check if it's a Saturday first
@@ -402,20 +426,25 @@ const SchedulerPage = () => {
     return saturdayNumber === 2 || saturdayNumber === 4;
   };
   
-  // Get the next working day, skipping 2nd and 4th Saturdays and Sundays
+  // Check if a date is a non-working day (Sunday, 2nd/4th Saturday, or Holiday)
+  const isNonWorkingDay = (date) => {
+    return date.getDay() === 0 || isNonWorkingSaturday(date) || isHoliday(date);
+  };
+  
+  // Get the next working day, skipping Sundays, 2nd/4th Saturdays, and holidays
   const getNextWorkingDay = (date) => {
     const nextDay = new Date(date);
     nextDay.setDate(date.getDate() + 1);
     
-    // Skip Sundays and non-working Saturdays
-    while (nextDay.getDay() === 0 || isNonWorkingSaturday(nextDay)) {
+    // Skip non-working days
+    while (isNonWorkingDay(nextDay)) {
       nextDay.setDate(nextDay.getDate() + 1);
     }
     
     return nextDay;
   };
   
-  // Calculate the actual working date considering non-working Saturdays
+  // Calculate the actual working date considering non-working Saturdays and holidays
   const calculateWorkingDate = (startDate, totalDaysOffset) => {
     let currentDate = new Date(startDate);
     let remainingDays = totalDaysOffset;
@@ -424,8 +453,8 @@ const SchedulerPage = () => {
     while (remainingDays > 0) {
       currentDate.setDate(currentDate.getDate() + 1);
       
-      // Skip Sundays and non-working Saturdays
-      if (currentDate.getDay() !== 0 && !isNonWorkingSaturday(currentDate)) {
+      // Skip Sundays, non-working Saturdays, and holidays
+      if (!isNonWorkingDay(currentDate)) {
         remainingDays--;
       }
     }
@@ -467,17 +496,25 @@ const SchedulerPage = () => {
           // Each week adds 5 working days (Mon-Fri), plus the day within the week
           const totalDaysOffset = (weekIndex * 5) + dayIndex;
           
-          // Calculate the actual working date considering non-working Saturdays
+          // Calculate the actual working date considering non-working Saturdays and holidays
           const eventDate = calculateWorkingDate(startDateObj, totalDaysOffset);
           
           console.log(`Week ${weekIndex + 1}, Day ${dayIndex + 1}: ${eventDate.toDateString()} (offset: ${totalDaysOffset})`);
           
-          // Check if the calculated date falls on a non-working Saturday
-          if (isNonWorkingSaturday(eventDate)) {
+          // Check if the calculated date falls on a non-working day and provide specific feedback
+          let shiftReason = '';
+          if (isHoliday(eventDate)) {
+            shiftReason = 'holiday';
+            console.log(`🎉 Date ${eventDate.toDateString()} is a holiday, moving to next working day`);
+          } else if (isNonWorkingSaturday(eventDate)) {
+            shiftReason = '2nd/4th Saturday';
             console.log(`⚠️ Date ${eventDate.toDateString()} is a non-working Saturday, moving to next working day`);
+          }
+          
+          if (shiftReason) {
             const workingDate = getNextWorkingDay(eventDate);
             eventDate.setTime(workingDate.getTime());
-            console.log(`✅ Moved to: ${eventDate.toDateString()}`);
+            console.log(`✅ Shifted from ${shiftReason} to: ${eventDate.toDateString()}`);
           }
           
           // Split multi-line sessions and create separate events
@@ -534,7 +571,7 @@ const SchedulerPage = () => {
     
     const shiftedEvents = calendarEvents.filter(event => event.extendedProps.isShifted);
     const message = shiftedEvents.length > 0 
-      ? `✅ Successfully populated calendar with ${calendarEvents.length} sessions starting from ${startDate}. ${shiftedEvents.length} sessions were shifted due to non-working Saturdays.`
+      ? `✅ Successfully populated calendar with ${calendarEvents.length} sessions starting from ${startDate}. ${shiftedEvents.length} sessions were shifted due to non-working Saturdays or holidays.`
       : `✅ Successfully populated calendar with ${calendarEvents.length} sessions starting from ${startDate}`;
     
     alert(message);
@@ -701,6 +738,20 @@ const SchedulerPage = () => {
           >
             <span className="icon">ℹ️</span>
             <span>How to Auto-Populate</span>
+          </button>
+          
+          <button 
+            className="action-button info-btn"
+            onClick={() => {
+              const holidayList = holidays2025.map(date => {
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+              }).join('\n');
+              alert(`🎉 ETASHA Society Holidays 2025:\n\n${holidayList}\n\nClasses scheduled on these dates will be automatically shifted to the next working day.`);
+            }}
+          >
+            <span className="icon">🎉</span>
+            <span>View Holidays 2025</span>
           </button>
           
           {selectedBatchId && (
