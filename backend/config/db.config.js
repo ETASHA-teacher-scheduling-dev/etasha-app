@@ -3,22 +3,18 @@
 // Project Settings -> Database -> Database Password
 
 module.exports = {
-  // Supabase PostgreSQL Direct Connection
-  // Using direct connection for better compatibility with Sequelize
-  HOST: "db.vuiqklucyjngwvmpzxyw.supabase.co",
+  // Supabase PostgreSQL Connection via Session Pooler (IPv4 compatible)
+  HOST: "aws-0-ap-south-1.pooler.supabase.com",
   USER: "postgres.vuiqklucyjngwvmpzxyw",
-  PASSWORD: process.env.SUPABASE_DB_PASSWORD || "YOUR_SUPABASE_DB_PASSWORD_HERE",
+  PASSWORD: process.env.SUPABASE_DB_PASSWORD,
   DB: "postgres",
   dialect: "postgres",
-  port: 5432,
+  port: 6543, // Session pooler port for better connection pooling
   dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false
-    },
-    // Force IPv4 to avoid IPv6 connection issues
-    keepAlive: true,
-    keepAliveInitialDelayMillis: 0
+    }
   },
   pool: {
     max: 5,
@@ -26,13 +22,9 @@ module.exports = {
     acquire: 30000,
     idle: 10000,
   },
-  // Force IPv4 by using Node.js family option
-  native: false,
   
-  // Alternative: Pooler connection (requires pgbouncer: true)
-  // HOST: "aws-0-ap-south-1.pooler.supabase.com",
-  // PORT: 6543,
-  // dialectOptions: {
-  //   ssl: { require: true, rejectUnauthorized: false }
-  // }
+  // Optional: Direct connection (port 5432) if pooler has issues
+  // Note: Direct connection may have IPv6 issues on some platforms
+  // HOST: "db.vuiqklucyjngwvmpzxyw.supabase.co",
+  // port: 5432,
 };
