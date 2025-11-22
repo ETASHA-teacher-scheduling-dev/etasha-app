@@ -1,0 +1,17 @@
+services:
+  # Backend API Service
+  - type: web
+    name: etasha-backend
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_DB_PASSWORD
+        sync: false  # You'll set this in Render dashboard
+      - key: PORT
+        value: 8080

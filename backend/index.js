@@ -9,8 +9,14 @@ const apiRoutes = require("./routes/api.routes");
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
-app.use(cors()); // Allows frontend to communicate with this backend
+// CORS configuration - allow frontend from any origin in development, specific origin in production
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || '*',
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions)); // Allows frontend to communicate with this backend
 app.use(express.json()); // To parse JSON request bodies
 app.use(express.urlencoded({ extended: true }));
 
